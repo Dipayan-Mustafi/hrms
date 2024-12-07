@@ -1,2 +1,2 @@
-# hrms
+# HRMS
 HRMS ERP v1.0
