@@ -1,0 +1,63 @@
+<div id="menuBar">
+	<ul id="menu">
+		<?
+		while ($menuFres=$obj->fetchrow($menuRes)){
+			$r++;
+			
+			
+		?>
+			<li>
+		<?php 
+			if ($menuFres[2]=="#"){
+			?>
+			<a href="<?= $menuFres[2]?>"><?= strtoupper($menuFres[1])?></a>
+			<? }else{?>
+			<a href="#" onclick="navigate('<?= $url?><?= $menuFres[2]?>');"><?= strtoupper($menuFres[1])?></a>
+			<? }?>
+			<?
+			$smnRes=$obj->select("menumanager", "menuHead=$menuFres[0] order by menuPos");
+			$smnRows=$obj->rows($smnRes);
+			if ($smnRows > 0){
+				print "<ul class='sub-menu'>";
+				
+				while ($smnFres=$obj->fetchrow($smnRes)){
+					/* $mpRes=$obj->select("menuperm", "menuID=$smnFres[0] and userID=$suid");
+					$mpRows=$obj->rows($mpRes);
+					if ($mpRows > 0){
+						if ($smnFres[3]=="#" || $smnFres[3]==""){
+							print "<li><a href='#' >".strtoupper($smnFres[1])."</a>";
+						}else{ */
+							print "<li><a href='#' onclick='navigate( \"".$url."$smnFres[2]\");'>".strtoupper($smnFres[1])."</a>";
+						//}
+						$ssmRes=$obj->select("menumanager","menuHead=$smnFres[0] order by menuPos");
+						$ssmRows=$obj->rows($ssmRes);
+						if ($ssmRows > 0){
+							print "<ul class='sub-sub-menu'>";
+							while ($ssmFres=$obj->fetchrow($ssmRes)){
+								$smpRes=$obj->select("menuperm", "menuID=$ssmFres[0] and userID=$suid");
+								$smpRows=$obj->rows($smpRes);
+								if ($smpRows > 0){
+									print "<li><a href='#' onclick='navigate( \"".$url."$ssmFres[2]\");'>".strtoupper($ssmFres[1])."</a></li>";
+								}
+							}
+
+							print "</ul>";
+						}
+						print "</li>";
+					//}
+				}
+				print "</ul>";
+			}
+			
+			?>
+			
+		</li>
+		<? 
+		}
+		
+		
+		?>
+		<li style="border:none;"><a href="<?= $url ?>logout">LOGOUT</a></li>
+		
+	</ul>
+</div>

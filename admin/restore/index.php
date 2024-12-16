@@ -1,0 +1,7 @@
+<?
+require ("../../config/setup.inc");
+
+
+
+
+?>
